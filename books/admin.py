@@ -1,10 +1,15 @@
 from django.contrib import admin
-from .models import User, Book, Hondana, Emotion, Dialog, Conf
+from django.contrib.auth.admin import UserAdmin
+from .models import User, TitleList,  AuthorList, Book, Bookshelf, \
+    Emotion, Dialog, Conf
+
 
 # Register your models here.
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
+admin.site.register(TitleList)
+admin.site.register(AuthorList)
 admin.site.register(Book)
-admin.site.register(Hondana)
+admin.site.register(Bookshelf)
 admin.site.register(Emotion)
 admin.site.register(Dialog)
 admin.site.register(Conf)

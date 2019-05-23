@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'books',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -120,3 +121,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+AUTH_USER_MODEL = 'books.User'
+
+# ログイン後トップページにリダイレクト
+LOGIN_URL = 'login'  # ログインしていないときのリダイレクト先
+LOGIN_REDIRECT_URL = 'book_list'  # ログイン後のリダイレクト先
+LOGOUT_REDIRECT_URL = 'book_list'  # ログアウト後のリダイレクト先
