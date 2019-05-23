@@ -1,15 +1,10 @@
-# accounts/forms.py
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser
+from django.contrib.auth import forms as auth_forms
 
 
-class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm):
-        model = CustomUser
-        fields = ('username', 'email')
+class LoginForm(auth_forms.AuthenticationForm):
+    '''ログインフォーム'''
 
-
-class CustomUserChangeForm(UserChangeForm):
-    class Meta:
-        model = CustomUser
-        fields = ('username', 'email')
+    def __init__(self, *args, **kw):
+        super().__init__(*args, **kw)
+        for field in self.fields.values():
+            field.widget.attrs['placeholder'] = field.label
