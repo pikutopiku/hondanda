@@ -10,6 +10,9 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">ログイン</button>
+
+        <a href="{% url 'create' %}">アカウント作成</a>
+ 
     </form>
 </body>
 </html>

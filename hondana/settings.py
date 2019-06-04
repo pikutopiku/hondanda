@@ -127,4 +127,4 @@ AUTH_USER_MODEL = 'books.User'
 # ログイン後トップページにリダイレクト
 LOGIN_URL = 'login'  # ログインしていないときのリダイレクト先
 LOGIN_REDIRECT_URL = 'book_list'  # ログイン後のリダイレクト先
-LOGOUT_REDIRECT_URL = 'book_list'  # ログアウト後のリダイレクト先
+LOGOUT_REDIRECT_URL = 'login'  # ログアウト後のリダイレクト先

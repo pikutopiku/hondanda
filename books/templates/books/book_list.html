@@ -1,14 +1,25 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
     <body>
         {% if user.id %}
         <p>ログインしました．</p>
         <p>こんにちは，{{ user.username }}さん</p>
-        {% endif %}
+        <p>ユーザー番号:{{ user.id }}</p>
 	    <div class="page-header">
-		    <h1><a href="/">お気に入り本棚</a></h1>
-		    <p>最終更新日: 25.04.2019, 16:02</p>
+		    <h1><a>お気に入り本棚</a></h1>
+            <p>最終更新日: 25.04.2019, 16:02</p>
         </div>
+        {% endif %}
+        <p>本の一覧</p>
+        {% for item in data %}
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.user.username}}</td>
+            <td>{{item.book.titlelist.title}}</td><br>
+        </tr>
+        {% endfor %}
+
 
         <div>
             <h2><a href="{% url 'hasire' %}">走れメロス</a></h2>
