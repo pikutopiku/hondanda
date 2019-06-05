@@ -11,16 +11,16 @@
             <p>最終更新日: 25.04.2019, 16:02</p>
         </div>
         {% endif %}
-        <p>本の一覧</p>
+        <h2>本の一覧</h2>
         {% for item in data %}
         <tr>
-            <td>{{item.id}}</td>
-            <td>{{item.user.username}}</td>
-            <td>{{item.book.titlelist.title}}</td><br>
+            <td>ブックリストナンバー：{{item.id}}</td><br>
+            <td>登録ユーザー：{{item.user.username}}</td><br>
+            <h2>{{item.book.titlelist.title}}</h2><br>
         </tr>
         {% endfor %}
 
-
+<!--
         <div>
             <h2><a href="{% url 'hasire' %}">走れメロス</a></h2>
             <p>友情のためにメロスが走る． </p>
@@ -31,6 +31,7 @@
             <h2><a href="https://www.aozora.gr.jp/cards/001779/files/57228_58735.html">怪人二十面相</a></h2>
             <p>怪人と探偵の真剣勝負</p>
         </div>
+    -->
         <a href="{% url 'logout' %}">ログアウトする</a>
 	</body>
 	<link rel="stylesheet" type="text/css" href="text.css">

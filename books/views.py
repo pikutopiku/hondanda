@@ -18,7 +18,8 @@ from django.urls import reverse_lazy
 
 
 def book_list(request):
-    data = Bookshelf.objects.all()
+    user = request.user.id
+    data = Bookshelf.objects.filter(user_id=user)
     params = {'data': data, }
     return render(request, 'books/book_list.html', params)
 
