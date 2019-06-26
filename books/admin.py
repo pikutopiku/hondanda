@@ -3,7 +3,6 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User, TitleList,  AuthorList, Book, Bookshelf, \
     Emotion, Dialog, Conf
 
-# 追加
 
 # Register your models here.
 admin.site.register(User, UserAdmin)

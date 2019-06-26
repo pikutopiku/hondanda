@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.core.validators import URLValidator
 # Create your models here.
 
 
@@ -37,6 +37,7 @@ class Book(models.Model):
         TitleList, on_delete=models.CASCADE)  # TitleList関連付け
     authorlist = models.ForeignKey(
         AuthorList, on_delete=models.CASCADE)  # AuthouList関連付け
+    url = models.TextField(validators=[URLValidator()])
 
     def __str__(self):
         return '<book:id=' + str(self.id) + ',' + \
@@ -85,4 +86,5 @@ class Conf(models.Model):
 
     def __str__(self):
         return '<user:' + str(self.user.username) + ', ' + \
-            'size:' + str(self.char) + ', ' + 'color:' + str(self.color) + '>'
+            'size:' + str(self.char) + ', ' + 'color:' + \
+            str(self.color) + '>'

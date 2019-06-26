@@ -6,6 +6,7 @@ urlpatterns = [
     path('hasire', views.hasire, name='hasire'),
     path('login/', views.loginView.as_view(), name="login"),
     path('logout/', views.logoutView.as_view(), name="logout"),
-    path('index/', views.indexView.as_view(), name="indexlist"),
     path('create/', views.createView.as_view(), name="create"),
+    path('index/', views.post_new, name='post_new'),
+    # path('', views.book_new, name='book_new'),
 ]

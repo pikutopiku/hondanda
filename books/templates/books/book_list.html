@@ -6,33 +6,27 @@
         <p>ログインしました．</p>
         <p>こんにちは，{{ user.username }}さん</p>
         <p>ユーザー番号:{{ user.id }}</p>
-	    <div class="page-header">
-		    <h1><a>お気に入り本棚</a></h1>
-            <p>最終更新日: 25.04.2019, 16:02</p>
-        </div>
         {% endif %}
-        <h2>本の一覧</h2>
+	    <div class="page-header">
+            <h1><a>お気に入り本棚</a></h1>
+            
+            <p>作品追加</p>
+            <form action="" method="post">
+                {% csrf_token %}
+                <label for="url"> URL : </label>
+                <input type="url" name="url" size ="100" value="https://">
+                <input type="submit" value="送信">
+            </form>
+            <p>{{title}}</p>
+            <p>{{author}}</p>
+        </div>
+        <h2>追加した本の一覧</h2>
         {% for item in data %}
         <tr>
-            <td>ブックリストナンバー：{{item.id}}</td><br>
-            <td>登録ユーザー：{{item.user.username}}</td><br>
-            <h2>{{item.book.titlelist.title}}</h2><br>
+            <h2><a href={{item.book.url}}>{{item.book.titlelist.title}}</a></h2><br>
         </tr>
         {% endfor %}
-
-<!--
-        <div>
-            <h2><a href="{% url 'hasire' %}">走れメロス</a></h2>
-            <p>友情のためにメロスが走る． </p>
-        </div>
-
-        <div>
-            <p>公開日: 2014/06/14, 12:14</p>
-            <h2><a href="https://www.aozora.gr.jp/cards/001779/files/57228_58735.html">怪人二十面相</a></h2>
-            <p>怪人と探偵の真剣勝負</p>
-        </div>
-    -->
         <a href="{% url 'logout' %}">ログアウトする</a>
 	</body>
-	<link rel="stylesheet" type="text/css" href="text.css">
+	<!--<link rel="stylesheet" type="text/css" href="text.css">-->
 </html>
