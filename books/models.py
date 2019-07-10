@@ -70,6 +70,7 @@ class Dialog(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Bookと関連付け
     emotionID = models.ForeignKey(
         Emotion, on_delete=models.CASCADE)  # Emotionと関連付け
+    comment = models.TextField()
 
     def __str__(self):
         return '<serif:' + self.user.username + ', ' + \

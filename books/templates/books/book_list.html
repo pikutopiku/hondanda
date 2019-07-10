@@ -5,7 +5,6 @@
         {% if user.id %}
         <p>ログインしました．</p>
         <p>こんにちは，{{ user.username }}さん</p>
-        <p>ユーザー番号:{{ user.id }}</p>
         {% endif %}
 	    <div class="page-header">
             <h1><a>お気に入り本棚</a></h1>
@@ -14,16 +13,14 @@
             <form action="" method="post">
                 {% csrf_token %}
                 <label for="url"> URL : </label>
-                <input type="url" name="url" size ="100" value="https://">
+                <input type="url" name="url" size ="100" value="https://www.aozora.gr.jp/">
                 <input type="submit" value="送信">
             </form>
-            <p>{{title}}</p>
-            <p>{{author}}</p>
         </div>
         <h2>追加した本の一覧</h2>
         {% for item in data %}
         <tr>
-            <h2><a href={{item.book.url}}>{{item.book.titlelist.title}}</a></h2><br>
+            <h2><a href="{% url 'text' item.book.url %}">{{item.book.titlelist.title}}</a></h2><br>
         </tr>
         {% endfor %}
         <a href="{% url 'logout' %}">ログアウトする</a>
