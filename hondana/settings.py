@@ -69,6 +69,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'hondana.wsgi.application'
 
 

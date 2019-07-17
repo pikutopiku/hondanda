@@ -1,0 +1,14 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+        {% autoescape off %}
+            {% spaceless %}
+                {{ data }}
+            {% endspaceless %}
+        {% endautoescape %}
+
+    
+    <script src="{% static 'js/HighLight.js' %}"></script>
+    <script src="{% static 'js/EventList.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/text.css' %}">
+</html>

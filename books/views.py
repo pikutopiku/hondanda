@@ -15,6 +15,8 @@ from bs4 import BeautifulSoup
 
 import os.path
 
+from xml.sax.saxutils import unescape
+
 
 # Create your views here.
 
@@ -40,10 +42,7 @@ def book_list(request):
         author_num = d[a_num:s_num - 1]
         title_num = d[s_num+6:m_num]
         all_num = d[m_num + 1:e_num]
-        f_name = d[s_num+6:]
-        print(author_num)
-        print(title_num)
-        print(all_num)
+        f_name = d[s_num+6:e_num]
 
         # 作品名，ID登録
         title = TitleList(id=title_num, title=title)
@@ -54,17 +53,16 @@ def book_list(request):
         author.save()
 
         # 　本文ファイル保存
-        s1 = 'books/templates/books/text/' + f_name
+        s1 = 'books/templates/books/text/' + f_name + '.txt'
         if os.path.isfile(s1) is True:
             print("あるよ")
         else:
             print("ないよ")
-            head_tag = soup.title.prettify()
+            head_tag = soup.head.prettify()
             body_tag = soup.body.prettify()
             html_tag = head_tag + body_tag
-            h = '<html> \n' + html_tag + '<!-- コメント --> \n' + '</html>'
             f = open(s1, 'w')
-            f.write(h)
+            f.write(html_tag)
             f.close()
 
         # Bookテーブル登録
@@ -87,9 +85,13 @@ def hasire(request):
     return render(request, 'books/hasire.html')
 
 
-def text(request, u):
-    url = 'books/text/' + u
-    return render(request, url)
+def book_text(request, u):
+    url = 'books/templates/books/text/' + u + '.txt'
+    text_data = open(url, 'r')
+    text = text_data.read()
+    text_data.close()
+    params = {'data': text, }
+    return render(request, 'books/book_text.html', params)
 
 
 # ログイン関係
