@@ -20,7 +20,7 @@
         <h2>追加した本の一覧</h2>
         {% for item in data %}
         <tr>
-            <h2><a href="{% url 'book_text' item.book.url%}">{{item.book.titlelist.title}}</a></h2><br>
+            <h2><a href="{% url 'book_text' item.book.id %}" >{{item.book.titlelist.title}}</a></h2><br>
         </tr>
         {% endfor %}
         <a href="{% url 'logout' %}">ログアウトする</a>

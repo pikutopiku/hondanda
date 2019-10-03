@@ -57,7 +57,7 @@ class Bookshelf(models.Model):
 
 class Emotion(models.Model):
     # 感情情報
-    emotion = models.CharField(max_length=100)  # 感情名(一時的に単語で作成)
+    emotion = models.CharField(max_length=100)  # 感情名
 
     def __str__(self):
         return '<emotion:' + str(self.id) + '(' + self.emotion + ')>'
@@ -65,7 +65,7 @@ class Emotion(models.Model):
 
 class Dialog(models.Model):
     # 会話情報
-    id = models.IntegerField(primary_key=True, default=0)  # セリフ番号
+    dialog = models.IntegerField(default=0)  # セリフ番号
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Userと関連付け
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Bookと関連付け
     emotionID = models.ForeignKey(
@@ -73,8 +73,8 @@ class Dialog(models.Model):
     comment = models.TextField()
 
     def __str__(self):
-        return '<serif:' + self.user.username + ', ' + \
-            self.book.titlelist.title + ', ' + str(self.id) + \
+        return '<serif:' + str(self.dialog) + ', ' + self.user.username + ', ' + \
+            self.book.titlelist.title + ', ' + \
             '(' + self.emotionID.emotion + ')> '
 
 

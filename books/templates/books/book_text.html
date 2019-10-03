@@ -3,12 +3,36 @@
 <html lang="ja">
         {% autoescape off %}
             {% spaceless %}
+            <p id="{{ user }}"></p>
+            <p2 id="{{ bookID }}"></p2>    
                 {{ data }}
             {% endspaceless %}
         {% endautoescape %}
 
+        
+        <!--ダイアログを呼び出すボタン-->
+        <button id="btn_action2">ダイアログ表示</button>
+ 
+        <!--ダイアログの内容-->
+        <form id="mydialog2" action="" method="post">
+            {% csrf_token %}
+            <meta name="csrf-token" content="{% csrf_token %}">
+            オリジナルダイアログをポップアップ表示するサンプル。<br />
+            <!--ラジオボタンを配置-->
+            
+                <label><input type="radio" name="test" value="1" checked> 怒り</label><br />
+                <label><input type="radio" name="test" value="2"> 悲しみ</label><br />
+                <label><input type="radio" name="test" value="3"> 喜び</label><br />
+                <label><input type="radio" name="test" value="4"> 不安</label><br />
+        </form>
+
+        
     
+    {% csrf_token %}
+    <script src="{% static 'books/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'books/js/jquery-ui.js' %}"></script>
     <script src="{% static 'js/HighLight.js' %}"></script>
-    <script src="{% static 'js/EventList.js' %}"></script>
+    <script src="{% static 'js/Event.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/text.css' %}">
+    <link rel="stylesheet" href="{% static 'books/css/jquery-ui.css' %}">
 </html>
