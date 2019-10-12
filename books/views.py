@@ -1,19 +1,18 @@
+import os.path  # books/templates/books/text/にあるファイルをimport
+from bs4 import BeautifulSoup
+import urllib.error
+import urllib.request
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from django.shortcuts import render
+from django.http import HttpResponse
 
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+# from django.views.generic import TemplateView
 from . import forms
-
-from .models import Bookshelf, Book, TitleList, AuthorList, User, Dialog, Emotion  # データ呼び出し
-from django.views.generic import CreateView
-from django.urls import reverse_lazy
-
-import urllib.request
-import urllib.error
-from bs4 import BeautifulSoup
-
-import os.path  # books/templates/books/text/にあるファイルをimport
+from .models import Bookshelf, Book, TitleList, AuthorList, User, \
+    Dialog, Emotion  # データ呼び出し
 
 
 # Create your views here.
@@ -68,21 +67,21 @@ def book_list(request):
                     authorlist=AuthorList(id=author_num), url=f_name, )
         book.save()
 
-        # 本棚テーブル登録
-        bookshelf = Bookshelf(user=User(id=user),
-                              book=Book(id=all_num), bookmark=0)
-        bookshelf.save()
+        querySet = Bookshelf.objects.filter(user_id=user, book_id=all_num)
+
+        print(querySet.first())
+
+        if querySet.first() is None:
+
+            # 本棚テーブル登録
+            bookshelf = Bookshelf(user=User(id=user),
+                                  book=Book(id=all_num), bookmark=0)
+            bookshelf.save()
 
     else:  # ログインからのページ表示
         params = {'data': data, }
 
     return render(request, 'books/book_list.html', params)
-
-
-"""
-def hasire(request):
-    return render(request, 'books/hasire.html')
-"""
 
 
 def book_text(request, u):
@@ -113,12 +112,6 @@ class logoutView(LoginRequiredMixin, LogoutView):  # logout
     template_name = "books/logout.html"
 
 
-"""
-class indexView(TemplateView):
-    template_name = "books/index.html"
-"""
-
-
 # アカウント作成
 class createView(CreateView):
     form_class = forms.UserCreationForm
@@ -127,16 +120,16 @@ class createView(CreateView):
 
 
 # 感情登録
-
-
 def seve_emotion(request):
     if (request.method == 'POST'):  # POSTの受信時
         n = request.POST.get('idName')
         b = request.POST.get('bookID')
         s = request.POST.get('id')
         e = request.POST.get('radioVal')
-        print('userID:' + str(n) + ', bookID:' + str(b) +
+        id = f"{n}{b}{s}"
+        print('id:' + id + 'userID:' + str(n) + ', bookID:' + str(b) +
               ', serihuID:' + str(s) + ', emo:' + str(e))
-        dialog = Dialog(dialog=s, user=User(id=n),
+        dialog = Dialog(id=id, dialog=s, user=User(id=n),
                         book=Book(id=b), emotionID=Emotion(id=e))
         dialog.save()
+        return HttpResponse('')

@@ -58,6 +58,7 @@ class Bookshelf(models.Model):
 class Emotion(models.Model):
     # 感情情報
     emotion = models.CharField(max_length=100)  # 感情名
+    emotion = models.CharField(max_length=300)  # 感情名
 
     def __str__(self):
         return '<emotion:' + str(self.id) + '(' + self.emotion + ')>'
@@ -65,16 +66,18 @@ class Emotion(models.Model):
 
 class Dialog(models.Model):
     # 会話情報
+    # IDは同一の利用者の１つのセリフに重複付与対策
+    id = models.IntegerField(primary_key=True)  # 付与情報ID
     dialog = models.IntegerField(default=0)  # セリフ番号
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Userと関連付け
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Bookと関連付け
     emotionID = models.ForeignKey(
         Emotion, on_delete=models.CASCADE)  # Emotionと関連付け
-    comment = models.TextField()
+    comment = models.TextField()  # コメント
 
     def __str__(self):
-        return '<serif:' + str(self.dialog) + ', ' + self.user.username + ', ' + \
-            self.book.titlelist.title + ', ' + \
+        return '<serif:' + str(self.dialog) + ', ' + self.user.username \
+            + ', ' + self.book.titlelist.title + ', ' + \
             '(' + self.emotionID.emotion + ')> '
 
 

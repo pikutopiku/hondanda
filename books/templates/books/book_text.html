@@ -17,6 +17,7 @@
         <form id="mydialog2" action="" method="post">
             {% csrf_token %}
             <meta name="csrf-token" content="{% csrf_token %}">
+            
             オリジナルダイアログをポップアップ表示するサンプル。<br />
             <!--ラジオボタンを配置-->
             
@@ -24,6 +25,8 @@
                 <label><input type="radio" name="test" value="2"> 悲しみ</label><br />
                 <label><input type="radio" name="test" value="3"> 喜び</label><br />
                 <label><input type="radio" name="test" value="4"> 不安</label><br />
+                <br/>
+                <textarea name="test1" rows="10" cols="55">ここに記入してください</textarea>
         </form>
 
         
