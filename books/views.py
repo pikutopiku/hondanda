@@ -9,15 +9,15 @@ from django.http import HttpResponse
 
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.views.generic import TemplateView
 from . import forms
 from .models import Bookshelf, Book, TitleList, AuthorList, User, \
     Dialog, Emotion  # データ呼び出し
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
 
-
+@login_required
 def book_list(request):
     user = request.user.id
     data = Bookshelf.objects.filter(user_id=user)
@@ -84,12 +84,13 @@ def book_list(request):
     return render(request, 'books/book_list.html', params)
 
 
+@login_required
 def book_text(request, u):
 
     user = request.user.id
     k = Book.objects.get(id=u)
-    print("u:" + u)
-    print("k:" + k.url)
+    # print("u:" + u)
+    # print("k:" + k.url)
 
     url = 'books/templates/books/text/' + k.url + '.txt'
     text_data = open(url, 'r')

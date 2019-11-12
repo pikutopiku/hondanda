@@ -18,15 +18,20 @@
             {% csrf_token %}
             <meta name="csrf-token" content="{% csrf_token %}">
             
-            オリジナルダイアログをポップアップ表示するサンプル。<br />
+            <!-- ｢たくさんの人を殺したのか。｣の感情を選択してください．<br /> -->
+            <div id="TEST01"></div>
             <!--ラジオボタンを配置-->
             
-                <label><input type="radio" name="test" value="1" checked> 怒り</label><br />
-                <label><input type="radio" name="test" value="2"> 悲しみ</label><br />
-                <label><input type="radio" name="test" value="3"> 喜び</label><br />
-                <label><input type="radio" name="test" value="4"> 不安</label><br />
+                <label><input type="radio" id="rd1" name="test" value="1" checked> 喜び</label><br />
+                <label><input type="radio" id="rd2" name="test" value="2"> 信頼</label><br />
+                <label><input type="radio" id="rd3" name="test" value="3"> 恐れ</label><br />
+                <label><input type="radio" id="rd4" name="test" value="4"> 驚き</label><br />
+                <label><input type="radio" id="rd5" name="test" value="5"> 悲しみ</label><br />
+                <label><input type="radio" id="rd6" name="test" value="6"> 嫌悪</label><br />
+                <label><input type="radio" id="rd7" name="test" value="7"> 怒り</label><br />
+                <label><input type="radio" id="rd7" name="test" value="8"> 期待</label><br />
+                <label><input type="radio" id="rd8" name="test" value="9"> 不明</label><br />
                 <br/>
-                <textarea name="test1" rows="10" cols="55">ここに記入してください</textarea>
         </form>
 
         
