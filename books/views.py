@@ -21,7 +21,7 @@ from django.contrib.auth.decorators import login_required
 def book_list(request):
     user = request.user.id
     data = Bookshelf.objects.filter(user_id=user)
-    print(user)
+    # print(user)
 
     if (request.method == 'POST'):  # URLの送信ボタンが押された時のページ表示
         d = request.POST.get('url')
@@ -52,9 +52,9 @@ def book_list(request):
         # 　本文ファイル保存
         s1 = 'books/templates/books/text/' + f_name + '.txt'
         if os.path.isfile(s1) is True:
-            print("あるよ")
+            # print("あるよ")
         else:
-            print("ないよ")
+            # print("ないよ")
             head_tag = soup.head.prettify()
             body_tag = soup.body.prettify()
             html_tag = head_tag + body_tag
@@ -69,7 +69,7 @@ def book_list(request):
 
         querySet = Bookshelf.objects.filter(user_id=user, book_id=all_num)
 
-        print(querySet.first())
+        # print(querySet.first())
 
         if querySet.first() is None:
 
@@ -89,14 +89,11 @@ def book_text(request, u):
 
     user = request.user.id
     k = Book.objects.get(id=u)
-    # print("u:" + u)
-    # print("k:" + k.url)
 
     url = 'books/templates/books/text/' + k.url + '.txt'
     text_data = open(url, 'r')
     text = text_data.read()
     text_data.close()
-    print("BookID : " + u)
 
     params = {'data': text, 'user': user, 'bookID': u, }
     # if (request.method == 'POST'):  # URLの送信ボタンが押された時のページ表示
@@ -128,8 +125,8 @@ def seve_emotion(request):
         s = request.POST.get('id')
         e = request.POST.get('radioVal')
         id = f"{n}{b}{s}"
-        print('id:' + id + 'userID:' + str(n) + ', bookID:' + str(b) +
-              ', serihuID:' + str(s) + ', emo:' + str(e))
+        # print('id:' + id + 'userID:' + str(n) + ', bookID:' + str(b) +
+        #       ', serihuID:' + str(s) + ', emo:' + str(e))
         dialog = Dialog(id=id, dialog=s, user=User(id=n),
                         book=Book(id=b), emotionID=Emotion(id=e))
         dialog.save()
