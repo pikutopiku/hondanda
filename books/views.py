@@ -52,7 +52,7 @@ def book_list(request):
         # 　本文ファイル保存
         s1 = 'books/templates/books/text/' + f_name + '.txt'
         if os.path.isfile(s1) is True:
-            # print("あるよ")
+            pass  # あるよ
         else:
             # print("ないよ")
             head_tag = soup.head.prettify()
