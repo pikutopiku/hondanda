@@ -125,8 +125,6 @@ def seve_emotion(request):
         s = request.POST.get('id')
         e = request.POST.get('radioVal')
         id = f"{n}{b}{s}"
-        # print('id:' + id + 'userID:' + str(n) + ', bookID:' + str(b) +
-        #       ', serihuID:' + str(s) + ', emo:' + str(e))
         dialog = Dialog(id=id, dialog=s, user=User(id=n),
                         book=Book(id=b), emotionID=Emotion(id=e))
         dialog.save()
