@@ -48,11 +48,10 @@ class Bookshelf(models.Model):
     # 本棚情報
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Userと関連付け
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Bookと関連付け
-    bookmark = models.IntegerField(default=0)  # しおり
 
     def __str__(self):
         return '<Hondana:' + self.user.username + ', ' + \
-            self.book.titlelist.title + '(' + str(self.bookmark) + 'ページ)>'
+            self.book.titlelist.title + '>'
 
 
 class Emotion(models.Model):
@@ -68,7 +67,7 @@ class Dialog(models.Model):
     # IDは同一の利用者の１つのセリフに重複付与対策
     # 付与情報ID (ユーザーID＋ブックID＋セリフID)
     id = models.IntegerField(primary_key=True)
-    dialog = models.IntegerField(default=0)  # セリフ番号
+    dialog = models.IntegerField(default=1)  # セリフ番号
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Userと関連付け
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Bookと関連付け
     emotionID = models.ForeignKey(

@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ja">
+    <p id="{{ user }}"></p>
+    <p2 id="{{ bookID }}"></p2>
         {% autoescape off %}
             {% spaceless %}
-            <p id="{{ user }}"></p>
-            <p2 id="{{ bookID }}"></p2>    
                 {{ data }}
             {% endspaceless %}
         {% endautoescape %}
@@ -18,7 +18,6 @@
             {% csrf_token %}
             <meta name="csrf-token" content="{% csrf_token %}">
             
-            <!-- ｢たくさんの人を殺したのか。｣の感情を選択してください．<br /> -->
             <div id="TEST01"></div>
             <!--ラジオボタンを配置-->
             
@@ -30,15 +29,79 @@
                 <label><input type="radio" id="rd6" name="test" value="6"> 嫌悪</label><br />
                 <label><input type="radio" id="rd7" name="test" value="7"> 怒り</label><br />
                 <label><input type="radio" id="rd7" name="test" value="8"> 期待</label><br />
-                <label><input type="radio" id="rd8" name="test" value="9"> 不明</label><br />
+                <label><input type="radio" id="rd8" name="test" value="9"> 無し</label><br />
+                <label><input type="radio" id="rd8" name="test" value="10"> 分からない</label><br />
                 <br/>
         </form>
+
+        <!-- データ表示モーダルウィンドウ -->
+
+        <div id="modal" >
+                <h1>hello</h1> 
+                {% load static%}
+                <img width=100%>
+        </div>
+
+
+    <p3></p3>
+    <p4></p4>
+
+    <!--p3タグのid変更をトリガー-->
+    <script src="{% static 'books/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'books/js/jquery-ui.js' %}"></script>
+    <script type="text/javascript">
+
+        $(function(){
+        // ダイアログの初期設定
+            $("#modal").dialog({
+                autoOpen: false,  // 自動的に開かないように設定
+                width: 500,       // 横幅のサイズを設定
+                modal: true,      // モーダルダイアログにする
+    
+                buttons: [        // ボタン名 : 処理 を設定
+                    {
+                        text: '戻る',
+                        click: function(){
+                        $(this).dialog("close");
+                        }
+                    }
+                ]
+            });
+
+            $('p3').on('DOMSubtreeModified propertychange', function() {
+                var Dialogid = $('p3').attr('id');    //利用者ID
+                // ajaxで送信
+                $.ajax({
+                    method: 'GET',
+                    url: 'count_emotion/',
+                    data: {"Dialogid": Dialogid,"Bookid": '{{ bookID }}'},
+                })
+                .done(function(data) {
+                    if (data.length > 0) {
+                        $('img').attr('src', "{% static 'figure.png' %}");
+                        $('p4').attr('id', 1);
+                    }
+                })
+                $('p3').removeAttr('id');
+                
+            });
+
+            $('p4').on('DOMSubtreeModified propertychange', function() {
+                // console.log('{{ dialogID }}')
+                $("#modal").dialog("open");
+                $('p4').removeAttr('id');
+            });
+
+        })
+                
+    </script>
 
         
     
     {% csrf_token %}
     <script src="{% static 'books/js/jquery-3.4.1.min.js' %}"></script>
     <script src="{% static 'books/js/jquery-ui.js' %}"></script>
+    <script src="{% static 'books/js/Chart.js' %}"></script>
     <script src="{% static 'js/HighLight.js' %}"></script>　
     <script src="{% static 'js/Event.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/text.css' %}">

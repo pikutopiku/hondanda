@@ -14,8 +14,8 @@ from .models import Bookshelf, Book, TitleList, AuthorList, User, \
     Dialog, Emotion  # データ呼び出し
 from django.contrib.auth.decorators import login_required
 
-
 # Create your views here.
+
 
 @login_required
 def book_list(request):
@@ -69,13 +69,11 @@ def book_list(request):
 
         querySet = Bookshelf.objects.filter(user_id=user, book_id=all_num)
 
-        # print(querySet.first())
-
         if querySet.first() is None:
 
             # 本棚テーブル登録
             bookshelf = Bookshelf(user=User(id=user),
-                                  book=Book(id=all_num), bookmark=0)
+                                  book=Book(id=all_num))
             bookshelf.save()
 
     else:  # ログインからのページ表示
@@ -85,7 +83,7 @@ def book_list(request):
 
 
 @login_required
-def book_text(request, u):
+def book_text(request, u):  # u=bookid
 
     user = request.user.id
     k = Book.objects.get(id=u)
@@ -94,9 +92,8 @@ def book_text(request, u):
     text_data = open(url, 'r')
     text = text_data.read()
     text_data.close()
-
     params = {'data': text, 'user': user, 'bookID': u, }
-    # if (request.method == 'POST'):  # URLの送信ボタンが押された時のページ表示
+
     return render(request, 'books/book_text.html', params)
 
 
@@ -128,4 +125,68 @@ def seve_emotion(request):
         dialog = Dialog(id=id, dialog=s, user=User(id=n),
                         book=Book(id=b), emotionID=Emotion(id=e))
         dialog.save()
-        return HttpResponse('')
+
+        params = {'data2': s, }
+        return render(request, 'books/book_text.html', params)
+    return HttpResponse("ajax is done!")
+
+
+# 感情集計
+def count_emotion(request):
+    if (request.method == 'GET'):
+        d = request.GET.get('Dialogid')
+        b = request.GET.get('Bookid')
+        log_db = Dialog.objects.filter(dialog=d, book_id=b)
+
+        if not (log_db.count() == 0):
+
+            print(log_db)
+            response = log_db
+            # prepare for data
+            datas = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            labers = ['喜び', '信頼', '恐れ', '驚き', '悲しみ',
+                      '嫌悪', '怒り', '期待', '無し']
+            colors = ['pink', 'palegreen', 'limegreen', 'lightcyan', 'lightskyblue',
+                      'mediumorchid', 'tomato', 'orange', 'silver']
+
+            # count
+            emo = []
+            for i in range(9):
+                k = i + 1
+                emo = log_db.filter(emotionID_id=k,)
+                datas[i] = log_db.filter(emotionID_id=k).count()
+                print(str(k) + " : " + str(emo))
+
+            print(datas)
+
+            # # create figure
+            import matplotlib
+            matplotlib.use('Agg')  # <= これが必要
+            import matplotlib.pyplot as plt
+            import matplotlib.cm as cm
+            import numpy as np
+            import japanize_matplotlib
+
+            # 綺麗に書くためのおまじない###
+            plt.style.use('ggplot')
+            plt.rcParams.update({'font.size': 15})
+
+            # 各種パラメータ###
+            size = (6, 5)  # 凡例を配置する関係でsizeは横長にしておきます。
+
+            # pie###
+            plt.figure(figsize=size, dpi=100)
+            plt.pie(datas, colors=colors, counterclock=False, startangle=90,
+                    autopct=lambda p: '{:.1f}%'.format(p) if p >= 5 else '')
+            plt.subplots_adjust(left=0, right=0.7)
+
+            plt.legend(labers, fancybox=True, loc='center left',
+                       bbox_to_anchor=(0.9, 0.5))
+            plt.axis('equal')
+            plt.savefig('books/static/figure.png',
+                        bbox_inches='tight', pad_inches=0.05)
+
+            return HttpResponse(response)
+
+        else:
+            return HttpResponse()
