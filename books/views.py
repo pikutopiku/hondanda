@@ -139,8 +139,6 @@ def count_emotion(request):
         log_db = Dialog.objects.filter(dialog=d, book_id=b)
 
         if not (log_db.count() == 0):
-
-            print(log_db)
             response = log_db
             # prepare for data
             datas = [0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -155,9 +153,6 @@ def count_emotion(request):
                 k = i + 1
                 emo = log_db.filter(emotionID_id=k,)
                 datas[i] = log_db.filter(emotionID_id=k).count()
-                print(str(k) + " : " + str(emo))
-
-            print(datas)
 
             # # create figure
             import matplotlib
