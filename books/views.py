@@ -26,7 +26,7 @@ def book_list(request):
     if (request.method == 'POST'):  # URLの送信ボタンが押された時のページ表示
         d = request.POST.get('url')
         print(d.startswith('https://www.aozora.gr.jp/'))
-        if (d.startswith('https://www.aozora.gr.jp/') == True):
+        if d.startswith('https://www.aozora.gr.jp/') == True:
             try:
                 res = urllib.request.urlopen(d)
             except urllib.error.HTTPError as e:
@@ -115,11 +115,6 @@ def book_text(request, u):  # u=bookid
         dd1[i] = d2[i]
         dd2[i] = d2[i]
 
-    print(d1)
-    print(d2)
-    print(dd1)
-    print(dd2)
-
     url = 'books/templates/books/text/' + k.url + '.txt'
     text_data = open(url, 'r')
     text = text_data.read()
@@ -187,7 +182,7 @@ def count_emotion(request):
             for i in range(9):
                 k = i + 1
                 datas[i] = log_db.filter(emotionID_id=k).count()
-            Not = log_db.filter(emotionID_id=10).count()
+            # Not = log_db.filter(emotionID_id=10).count()
 
             if (sum(datas) > 1):
                 # # create figure
