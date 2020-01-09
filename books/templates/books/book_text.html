@@ -3,6 +3,10 @@
 <html lang="ja">
     <p id="{{ user }}"></p>
     <p2 id="{{ bookID }}"></p2>
+    <div id=emo1 data-emo1="{{ emo.1 }}"></div>
+    <div id=emo2 data-emo2="{{ emo }}"></div>
+    
+
         {% autoescape off %}
             {% spaceless %}
                 {{ data }}
@@ -16,17 +20,17 @@
             
             <div id="TEST01"></div>
             <!--ラジオボタンを配置-->
-            
-                <label><input type="radio" id="rd1" name="test" value="1" checked> 喜び</label><br />
-                <label><input type="radio" id="rd2" name="test" value="2"> 信頼</label><br />
-                <label><input type="radio" id="rd3" name="test" value="3"> 恐れ</label><br />
-                <label><input type="radio" id="rd4" name="test" value="4"> 驚き</label><br />
-                <label><input type="radio" id="rd5" name="test" value="5"> 悲しみ</label><br />
-                <label><input type="radio" id="rd6" name="test" value="6"> 嫌悪</label><br />
-                <label><input type="radio" id="rd7" name="test" value="7"> 怒り</label><br />
-                <label><input type="radio" id="rd7" name="test" value="8"> 期待</label><br />
-                <label><input type="radio" id="rd8" name="test" value="9"> 無し</label><br />
-                <label><input type="radio" id="rd8" name="test" value="10"> 分からない</label><br />
+             <!-- checked -->
+                <label id="la1"><input type="radio" id="rd1" name="test" value="1"> 喜び</label><br />
+                <label id="la2"><input type="radio" id="rd2" name="test" value="2"> 信頼</label><br />
+                <label id="la3"><input type="radio" id="rd3" name="test" value="3"> 恐れ</label><br />
+                <label id="la4"><input type="radio" id="rd4" name="test" value="4"> 驚き</label><br />
+                <label id="la5"><input type="radio" id="rd5" name="test" value="5"> 悲しみ</label><br />
+                <label id="la6"><input type="radio" id="rd6" name="test" value="6"> 嫌悪</label><br />
+                <label id="la7"><input type="radio" id="rd7" name="test" value="7"> 怒り</label><br />
+                <label id="la8"><input type="radio" id="rd8" name="test" value="8"> 期待</label><br />
+                <label id="la9"><input type="radio" id="rd9" name="test" value="9"> 無し</label><br />
+                <label id="la10"><input type="radio" id="rd10" name="test" value="10"> 分からない</label><br />
                 <br/>
         </form>
 
@@ -36,6 +40,7 @@
                 <div id="TEST02"></div>
                 {% load static%}
                 <img width=100%>
+                <div id="TEST03"></div>
         </div>
 
 
@@ -59,6 +64,7 @@
                         text: '戻る',
                         click: function(){
                         $(this).dialog("close");
+                        $('img').removeAttr('src')
                         }
                     }
                 ]
@@ -66,30 +72,26 @@
 
             $('p3').on('DOMSubtreeModified propertychange', function() {
                 var Dialogid = $('p3').attr('id');    //利用者ID
+                var Emotion = $('p4').attr('id');   // 感情ID
                 // ajaxで送信
                 $.ajax({
                     method: 'GET',
                     url: 'count_emotion/',
-                    data: {"Dialogid": Dialogid,"Bookid": '{{ bookID }}'},
+                    data: {"Dialogid": Dialogid,"Bookid":'{{ bookID }}',"User":'{{ user }}'},
                 })
                 .done(function(data) {
-                    if (data.length > 0) {
+                    if (data.length > 1) {
                         $('img').attr('src', "{% static 'figure.png' %}");
-                        $('p4').attr('id', 1);
+                        $("#modal").dialog("open");
+                    }
+                    else{
+                        $("#TEST02").text("｢" + serif + "｣で感情を選択した人がいません．");
+                        $("#modal").dialog("open");
                     }
                 })
                 $('p3').removeAttr('id');
-                
-            });
-
-            $('p4').on('DOMSubtreeModified propertychange', function() {
-                // console.log('{{ dialogID }}')
-                $("#modal").dialog("open");
-                $('p4').removeAttr('id');
-            });
-
-        })
-                
+            })
+        });
     </script>
 
         
@@ -102,4 +104,11 @@
     <script src="{% static 'js/Event.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/text.css' %}">
     <link rel="stylesheet" href="{% static 'books/css/jquery-ui.css' %}">
+
+    <script type="text/javascript">
+        for(var i=0;i<="{{len}}";i++){
+            console.log("{{ emo1 }}")
+        }
+    </script>
+    
 </html>

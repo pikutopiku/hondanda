@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ja">
+<p id="{{ alart }}"></p>
     <body>
         {% if user.id %}
         <p>ログインしました．</p>
@@ -24,6 +25,15 @@
         </tr>
         {% endfor %}
         <a href="{% url 'logout' %}">ログアウトする</a>
+        <script type="text/javascript">
+            if('{{ alart }}' == 1){
+                alert('青空文庫内のURLを利用してください．')
+            }
+            else if('{{ alart }}' == 2){
+                alert('ページが見つかりませんでした．')
+            }
+
+        </script>
 	</body>
 	<!--<link rel="stylesheet" type="text/css" href="text.css">-->
 </html>
