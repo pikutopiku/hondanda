@@ -80,7 +80,7 @@
                     data: {"Dialogid": Dialogid,"Bookid":'{{ bookID }}',"User":'{{ user }}'},
                 })
                 .done(function(data) {
-                    if (data.length > 1) {
+                    if (data.length != 0) {
                         $('img').attr('src', "{% static 'figure.png' %}");
                         $("#modal").dialog("open");
                     }
