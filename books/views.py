@@ -184,7 +184,7 @@ def count_emotion(request):
                 datas[i] = log_db.filter(emotionID_id=k).count()
             # Not = log_db.filter(emotionID_id=10).count()
 
-            if (sum(datas) > 1):
+            if (sum(datas) >= 1):
                 # # create figure
                 import matplotlib
                 matplotlib.use('Agg')  # <= これが必要
@@ -219,4 +219,6 @@ def count_emotion(request):
             return HttpResponse(response)
 
         else:
-            return HttpResponse()
+            print("感情を選択している人がいません．")
+            response = 0
+            return HttpResponse(response)

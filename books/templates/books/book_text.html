@@ -80,13 +80,16 @@
                     data: {"Dialogid": Dialogid,"Bookid":'{{ bookID }}',"User":'{{ user }}'},
                 })
                 .done(function(data) {
-                    if (data.length != 0) {
-                        $('img').attr('src', "{% static 'figure.png' %}");
-                        $("#modal").dialog("open");
-                    }
-                    else{
-                        $("#TEST02").text("｢" + serif + "｣で感情を選択した人がいません．");
-                        $("#modal").dialog("open");
+                    console.log(data);
+                    if(data.length > 0) {
+                        if (data != 0) {
+                            $('img').attr('src', "{% static 'figure.png' %}");
+                            $("#modal").dialog("open");
+                        }
+                        else{
+                            $("#TEST02").text("｢" + serif + "｣で感情を選択した人がいません．");
+                            $("#modal").dialog("open");
+                        }
                     }
                 })
                 $('p3').removeAttr('id');
