@@ -166,9 +166,9 @@ def count_emotion(request):
         b = request.GET.get('Bookid')
         u = request.GET.get('User')
         log_db = Dialog.objects.filter(dialog=d, book_id=b)
-        log_db = log_db.exclude(user_id=u)
 
         if not (log_db.count() == 0):
+            log_db = log_db.exclude(user_id=u)
             response = log_db
             # prepare for data
             datas = [0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -220,5 +220,4 @@ def count_emotion(request):
 
         else:
             print("感情を選択している人がいません．")
-            response = 0
-            return HttpResponse(response)
+            return HttpResponse()
