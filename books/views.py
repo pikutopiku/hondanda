@@ -211,6 +211,7 @@ def count_emotion(request):
                 plt.axis('equal')
                 plt.savefig('books/static/figure.png',
                             bbox_inches='tight', pad_inches=0.05)
+                print("感情グラフを作成しました．")
 
             else:
                 print("感情を選択している人がいません．")
