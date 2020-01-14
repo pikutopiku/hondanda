@@ -1,0 +1,3 @@
+# ルート = .gitignoreのあるディレクトリとする
+
+db.sqlite3
