@@ -152,7 +152,7 @@ def seve_emotion(request):
         id = f"{n}{b}{s}"
         log = Dialog.objects.filter(dialog=s, book_id=b, user_id=n)
 
-        if not (log.count == 0):
+        if not (len(log) == 0):
             log = log.get(user_id=n)
             change = log.change+1
             dialog = Dialog(id=id, dialog=s, user=User(id=n),
