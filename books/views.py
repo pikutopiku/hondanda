@@ -155,7 +155,7 @@ def seve_emotion(request):
         if not (len(log) == 0):
             log = log.get(user_id=n)
             change = log.change+1
-            print("変更回数：" + change)
+            print("変更回数：" + str(change))
             dialog = Dialog(id=id, dialog=s, user=User(id=n),
                             book=Book(id=b), emotionID=Emotion(id=e), change=change)
         else:
