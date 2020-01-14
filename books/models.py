@@ -73,11 +73,7 @@ class Dialog(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Bookと関連付け
     emotionID = models.ForeignKey(
         Emotion, on_delete=models.CASCADE)  # Emotionと関連付け
-    # serif = models.CharField(max_length=100)
-    # comment = models.TextField()  # コメント  #変更
-
-    # class Meta:
-    # unique_together = ('dialog', 'user', 'book')  # 変更
+    change = models.IntegerField(default=1)
 
     def __str__(self):
         return '<serif:' + str(self.dialog) + ', ' + self.user.username \

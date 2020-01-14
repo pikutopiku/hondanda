@@ -150,8 +150,16 @@ def seve_emotion(request):
         s = request.POST.get('id')
         e = request.POST.get('radioVal')
         id = f"{n}{b}{s}"
-        dialog = Dialog(id=id, dialog=s, user=User(id=n),
-                        book=Book(id=b), emotionID=Emotion(id=e))
+        log = Dialog.objects.filter(dialog=s, book_id=b, user_id=n)
+
+        if not (log.count == 0):
+            log = log.get(user_id=n)
+            change = log.change+1
+            dialog = Dialog(id=id, dialog=s, user=User(id=n),
+                            book=Book(id=b), emotionID=Emotion(id=e), change=change)
+        else:
+            dialog = Dialog(id=id, dialog=s, user=User(id=n),
+                            book=Book(id=b), emotionID=Emotion(id=e), change=0)
         dialog.save()
 
         params = {'data2': s, }
@@ -162,63 +170,68 @@ def seve_emotion(request):
 # 感情集計
 def count_emotion(request):
     if (request.method == 'GET'):
-        d = request.GET.get('Dialogid')
-        b = request.GET.get('Bookid')
-        u = request.GET.get('User')
-        log_db = Dialog.objects.filter(dialog=d, book_id=b)
+        if not (request.GET.get('Dialogid') == None):
+            d = request.GET.get('Dialogid')
+            b = request.GET.get('Bookid')
+            u = request.GET.get('User')
+            log_db = Dialog.objects.filter(dialog=d, book_id=b)
 
-        if not (log_db.count() == 0):
-            log_db = log_db.exclude(user_id=u)
-            response = log_db
-            # prepare for data
-            datas = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-            labers = ['喜び', '信頼', '恐れ', '驚き', '悲しみ',
-                      '嫌悪', '怒り', '期待', '無し']
-            colors = ['pink', 'palegreen', 'limegreen', 'lightcyan', 'lightskyblue',
-                      'mediumorchid', 'tomato', 'orange', 'silver']
-            Not = 0
+            if not (log_db.count() == 0):
+                log_db = log_db.exclude(user_id=u)
+                response = log_db
+                # prepare for data
+                datas = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+                labers = ['喜び', '信頼', '恐れ', '驚き', '悲しみ',
+                          '嫌悪', '怒り', '期待', '無し']
+                colors = ['pink', 'palegreen', 'limegreen', 'lightcyan', 'lightskyblue',
+                          'mediumorchid', 'tomato', 'orange', 'silver']
+                Not = 0
 
-            # count
-            for i in range(9):
-                k = i + 1
-                datas[i] = log_db.filter(emotionID_id=k).count()
-            # Not = log_db.filter(emotionID_id=10).count()
+                # count
+                for i in range(9):
+                    k = i + 1
+                    datas[i] = log_db.filter(emotionID_id=k).count()
+                # Not = log_db.filter(emotionID_id=10).count()
 
-            if (sum(datas) >= 1):
-                # # create figure
-                import matplotlib
-                matplotlib.use('Agg')  # <= これが必要
-                import matplotlib.pyplot as plt
-                import matplotlib.cm as cm
-                import numpy as np
-                import japanize_matplotlib
+                if (sum(datas) >= 1):
+                    # # create figure
+                    import matplotlib
+                    matplotlib.use('Agg')  # <= これが必要
+                    import matplotlib.pyplot as plt
+                    import matplotlib.cm as cm
+                    import numpy as np
+                    import japanize_matplotlib
 
-                # 綺麗に書くためのおまじない###
-                plt.style.use('ggplot')
-                plt.rcParams.update({'font.size': 15})
+                    # 綺麗に書くためのおまじない###
+                    plt.style.use('ggplot')
+                    plt.rcParams.update({'font.size': 15})
 
-                # 各種パラメータ###
-                size = (6, 5)  # 凡例を配置する関係でsizeは横長にしておきます。
+                    # 各種パラメータ###
+                    size = (6, 5)  # 凡例を配置する関係でsizeは横長にしておきます。
 
-                # pie###
-                plt.figure(figsize=size, dpi=100)
-                plt.pie(datas, colors=colors, counterclock=False, startangle=90,
-                        autopct=lambda p: '{:.1f}%'.format(p) if p >= 5 else '')
-                plt.subplots_adjust(left=0, right=0.7)
+                    # pie###
+                    plt.figure(figsize=size, dpi=100)
+                    plt.pie(datas, colors=colors, counterclock=False, startangle=90,
+                            autopct=lambda p: '{:.1f}%'.format(p) if p >= 5 else '')
+                    plt.subplots_adjust(left=0, right=0.7)
 
-                plt.legend(labers, fancybox=True, loc='center left',
-                           bbox_to_anchor=(0.9, 0.5))
-                plt.axis('equal')
-                plt.savefig('books/static/figure.png',
-                            bbox_inches='tight', pad_inches=0.05)
-                print("感情グラフを作成しました．")
+                    plt.legend(labers, fancybox=True, loc='center left',
+                               bbox_to_anchor=(0.9, 0.5))
+                    plt.axis('equal')
+                    plt.savefig('books/static/figure.png',
+                                bbox_inches='tight', pad_inches=0.05)
+                    print("感情グラフを作成しました．")
+
+                else:
+                    print("感情を選択した人がいません．")
+                    response = 0
+
+                return HttpResponse(response)
 
             else:
-                print("感情を選択している人がいません．")
+                print("感情付与を行った人がいません")
                 response = 0
-
-            return HttpResponse(response)
-
+                return HttpResponse(response)
         else:
-            print("感情を選択している人がいません．")
+            print("からのデータです")
             return HttpResponse()
