@@ -11,7 +11,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
 from .models import Bookshelf, Book, TitleList, AuthorList, User, \
-    Dialog, Emotion  # データ呼び出し
+    Dialog, Emotion, Dialog_log  # データ呼び出し
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -103,25 +103,31 @@ def book_text(request, u):  # u=bookid
 
     user = request.user.id
     k = Book.objects.get(id=u)
-    d = Dialog.objects.filter(user=User(id=user), book=Book(id=u))
-    d1 = d.values_list('dialog', flat=True)
-    d1 = list(d1)
-    d2 = d.values_list('emotionID_id', flat=True)
-    d2 = list(d2)
-    dd1 = {}
-    dd2 = {}
-    for i in range(len(d1)):
-        print(i)
-        dd1[i] = d2[i]
-        dd2[i] = d2[i]
-
+    # テキストデータ取得
     url = 'books/templates/books/text/' + k.url + '.txt'
     text_data = open(url, 'r')
     text = text_data.read()
     text_data.close()
-    params = {'data': text, 'user': user,
-              'bookID': u, 'emo1': dd1, 'emo2': dd2, 'len': len(d1)}
-
+    # コメントデータ取得
+    d = Dialog.objects.filter(user=User(id=user), book=Book(id=u))
+    d1 = d.values_list('dialog', flat=True)
+    d1 = list(d1)
+    d2 = d.values_list('emotionID_id', flat=True)
+    if (len(d2) > 0):
+        d2 = list(d2)
+        dd2 = [0]*(max(d1)+1)
+        for i in range(max(d1)+1):
+            apper = i in d1
+            if (apper):
+                dd2[i] = d2[d1.index(i)]
+            else:
+                dd2[i] = 'a'
+        print(dd2)
+        params = {'data': text, 'user': user,
+                  'bookID': u, 'emo2': dd2}
+    else:
+        params = {'data': text, 'user': user,
+                  'bookID': u}
     return render(request, 'books/book_text.html', params)
 
 
@@ -155,13 +161,16 @@ def seve_emotion(request):
         if not (len(log) == 0):
             log = log.get(user_id=n)
             change = log.change+1
-            print("変更回数：" + str(change))
-            dialog = Dialog(id=id, dialog=s, user=User(id=n),
-                            book=Book(id=b), emotionID=Emotion(id=e), change=change)
         else:
-            dialog = Dialog(id=id, dialog=s, user=User(id=n),
-                            book=Book(id=b), emotionID=Emotion(id=e), change=0)
+            change = 0
+
+        dialog = Dialog(id=id, dialog=s, user=User(id=n),
+                        book=Book(id=b), emotionID=Emotion(id=e), change=change)
+        dialog_log = Dialog_log(id=id, dialog=s, user=User(id=n),
+                                book=Book(id=b), emotionID=Emotion(id=e), change=change)
+
         dialog.save()
+        dialog_log.save()
 
         params = {'data2': s, }
         return render(request, 'books/book_text.html', params)
@@ -186,7 +195,6 @@ def count_emotion(request):
                           '嫌悪', '怒り', '期待', '無し']
                 colors = ['pink', 'palegreen', 'limegreen', 'lightcyan', 'lightskyblue',
                           'mediumorchid', 'tomato', 'orange', 'silver']
-                Not = 0
 
                 # count
                 for i in range(9):

@@ -80,7 +80,6 @@
                     data: {"Dialogid": Dialogid,"Bookid":'{{ bookID }}',"User":'{{ user }}'},
                 })
                 .done(function(data) {
-                    console.log(data);
                     if(data.length > 0) {
                         if (data != 0) {
                             $('img').attr('src', "{% static 'figure.png' %}");
@@ -108,10 +107,15 @@
     <link rel="stylesheet" href="{% static 'css/text.css' %}">
     <link rel="stylesheet" href="{% static 'books/css/jquery-ui.css' %}">
 
+    {% for item in emo2 %}
     <script type="text/javascript">
-        for(var i=0;i<="{{len}}";i++){
-            console.log("{{ emo1 }}")
+        emo = "{{ item }}"
+        count = "{{ forloop.counter }}"-1
+        if(!isNaN(emo)){
+            $('#'+count).removeClass().addClass("e"+emo);//class名変更//色変更用
         }
+
     </script>
+    {% endfor %}
     
 </html>

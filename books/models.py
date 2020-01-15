@@ -81,6 +81,25 @@ class Dialog(models.Model):
             '(' + self.emotionID.emotion + ')> '
 
 
+class Dialog_log(models.Model):
+    # 会話情報
+    # IDは同一の利用者の１つのセリフに重複付与対策
+    # 付与情報ID (ユーザーID＋ブックID＋セリフID)
+    dialog = models.IntegerField(default=1)  # セリフ番号
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Userと関連付け
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Bookと関連付け
+    emotionID = models.ForeignKey(
+        Emotion, on_delete=models.CASCADE)  # Emotionと関連付け
+    change = models.IntegerField(default=1)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '<serif:' + str(self.dialog) + ', ' + self.user.username \
+            + ', ' + self.book.titlelist.title + ', ' + \
+            '(' + self.emotionID.emotion + ')' + \
+              str(self.change) + ';' + str(self.created) + '> '
+
+
 class Conf(models.Model):
     # ユーザー設定情報
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Userと関連付け
