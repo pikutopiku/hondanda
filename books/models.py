@@ -74,11 +74,13 @@ class Dialog(models.Model):
     emotionID = models.ForeignKey(
         Emotion, on_delete=models.CASCADE)  # Emotionと関連付け
     change = models.IntegerField(default=1)
+    look = models.IntegerField(default=0)
 
     def __str__(self):
         return '<serif:' + str(self.dialog) + ', ' + self.user.username \
             + ', ' + self.book.titlelist.title + ', ' + \
-            '(' + self.emotionID.emotion + ')> '
+            '(' + self.emotionID.emotion + '),' + \
+              str(self.change) + '回,' + str(self.look)+'> '
 
 
 class Dialog_log(models.Model):
@@ -91,13 +93,15 @@ class Dialog_log(models.Model):
     emotionID = models.ForeignKey(
         Emotion, on_delete=models.CASCADE)  # Emotionと関連付け
     change = models.IntegerField(default=1)
+    look = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return '<serif:' + str(self.dialog) + ', ' + self.user.username \
             + ', ' + self.book.titlelist.title + ', ' + \
             '(' + self.emotionID.emotion + ')' + \
-              str(self.change) + ';' + str(self.created) + '> '
+              str(self.change) + ',' + str(self.look) + \
+            ';(' + str(self.created) + ')> '
 
 
 class Conf(models.Model):
