@@ -155,7 +155,8 @@ def seve_emotion(request):
         b = request.POST.get('bookID')
         s = request.POST.get('id')
         e = request.POST.get('radioVal')
-        l = request.POST.get('look')
+        lo = request.POST.get('look')
+        print(lo)
         id = f"{n}{b}{s}"
         log = Dialog.objects.filter(dialog=s, book_id=b, user_id=n)
 
@@ -167,10 +168,10 @@ def seve_emotion(request):
 
         dialog = Dialog(id=id, dialog=s, user=User(id=n),
                         book=Book(id=b), emotionID=Emotion(id=e),
-                        change=change, look=l)
+                        change=change, look=lo,)
         dialog_log = Dialog_log(id=id, dialog=s, user=User(id=n),
                                 book=Book(id=b), emotionID=Emotion(id=e),
-                                change=change, look=l)
+                                change=change, look=lo,)
 
         dialog.save()
         dialog_log.save()
