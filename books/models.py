@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import URLValidator
+from django.utils import timezone
 
 # Create your models here.
 
@@ -94,7 +95,7 @@ class Dialog_log(models.Model):
         Emotion, on_delete=models.CASCADE)  # Emotionと関連付け
     change = models.IntegerField(default=1)
     look = models.IntegerField(default=0)
-    # created = models.DateTimeField()
+    created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return '<serif:' + str(self.dialog) + ', ' + self.user.username \
