@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 # from datetime import datetime
 from django.utils import timezone
 
+
 # Create your views here.
 
 
@@ -168,16 +169,17 @@ def seve_emotion(request):
             change = log.change+1
         else:
             change = 0
-
+        utc_nou = timezone.datetime.now()  # 現在の日時
         utc_now = timezone.now()  # utc
         print(utc_now)
+        print(utc_nou)
 
         dialog = Dialog(id=id, dialog=s, user=User(id=n),
                         book=Book(id=b), emotionID=Emotion(id=e),
                         change=change, look=lo,)
         dialog_log = Dialog_log(id=id, dialog=s, user=User(id=n),
                                 book=Book(id=b), emotionID=Emotion(id=e),
-                                change=change, look=lo,)
+                                change=change, look=lo, created=utc_now)
 
         dialog.save()
         dialog_log.save()
