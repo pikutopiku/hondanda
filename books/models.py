@@ -94,7 +94,7 @@ class Dialog_log(models.Model):
         Emotion, on_delete=models.CASCADE)  # Emotionと関連付け
     change = models.IntegerField(default=1)
     look = models.IntegerField(default=0)
-    created = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField()
 
     def __str__(self):
         return '<serif:' + str(self.dialog) + ', ' + self.user.username \
