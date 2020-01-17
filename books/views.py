@@ -177,7 +177,7 @@ def seve_emotion(request):
                         change=change, look=lo,)
         dialog_log = Dialog_log(id=id, dialog=s, user=User(id=n),
                                 book=Book(id=b), emotionID=Emotion(id=e),
-                                change=change, look=lo, created=utc_now)
+                                change=change, look=lo)
 
         dialog.save()
         dialog_log.save()
